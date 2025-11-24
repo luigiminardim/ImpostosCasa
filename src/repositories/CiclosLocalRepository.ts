@@ -175,10 +175,10 @@ export class CiclosLocalRepository implements CiclosRepository {
     this.pessoasRepository = pessoasRepository;
   }
 
-  private static indiceCiclo(dataInicio: Date): string {
+  private static idCiclo(dataInicio: Date): string {
     const ISO_DATE_LENGTH = "yyyy-mm-dd".length;
     const id = dataInicio.toISOString().substring(0, ISO_DATE_LENGTH);
-    return `ciclos/${id}`;
+    return id;
   }
 
   private obterIndices(): string[] {
@@ -202,23 +202,22 @@ export class CiclosLocalRepository implements CiclosRepository {
   }
 
   async salvarCiclo(ciclo: Ciclo): Promise<void> {
-    const indice = CiclosLocalRepository.indiceCiclo(ciclo.dataInicio);
+    const idCiclo = CiclosLocalRepository.idCiclo(ciclo.dataInicio);
     const cicloJson = CicloDao.fromCiclo(ciclo).toJson();
-    window.localStorage.setItem(indice, cicloJson);
-    this.salvarIndice(indice);
+    window.localStorage.setItem(`ciclos/${idCiclo}`, cicloJson);
+    this.salvarIndice(idCiclo);
   }
 
   async obterCiclo(data: Date): Promise<null | Ciclo> {
     const indices = await this.obterIndices();
     const primeiroIndiceMaiorOuIgual = indices.find((indice) => {
-      const dataInicioStr = indice.substring("ciclos/".length);
-      const dataInicio = new Date(dataInicioStr);
+      const dataInicio = new Date(indice);
       return dataInicio <= data;
     });
     if (!primeiroIndiceMaiorOuIgual) {
       return null;
     }
-    const json = window.localStorage.getItem(primeiroIndiceMaiorOuIgual);
+    const json = window.localStorage.getItem(`ciclos/${primeiroIndiceMaiorOuIgual}`);
     if (json === null) return null;
     const ciclo = await CicloDao.fromJson(json).toCiclo(this.pessoasRepository);
     if (ciclo instanceof Error) {

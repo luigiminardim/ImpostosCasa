@@ -1,22 +1,19 @@
-import { createRootRoute } from "@tanstack/react-router";
-
-import { StrictMode } from "react";
-import { CssBaseline, GeistProvider } from "@geist-ui/core";
-import { Outlet } from "@tanstack/react-router";
+import React from 'react'
+import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
-    <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <GeistProvider>
-          <CssBaseline />
+    <React.StrictMode>
+      <ChakraProvider value={defaultSystem}>
+        <QueryClientProvider client={queryClient}>
           <Outlet />
-        </GeistProvider>
-      </QueryClientProvider>
-    </StrictMode>
+        </QueryClientProvider>
+      </ChakraProvider>
+    </React.StrictMode>
   );
 }
 

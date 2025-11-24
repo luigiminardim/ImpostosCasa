@@ -25,7 +25,7 @@ export class ObterCicloUsecase {
   }
 
   async obterCiclo(data: string): Promise<null | CicloView> {
-    const dataObj = new Date(data)
+    const dataObj = new Date(data);
     const ciclo = await this.cicloRepository.obterCiclo(dataObj);
     if (!ciclo) return null;
     return new CicloView(ciclo);

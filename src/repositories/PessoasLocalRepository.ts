@@ -53,7 +53,7 @@ export class PessoasLocalRepository implements PessoasRepository {
 
   async salvarPessoa(pessoa: Pessoa): Promise<void> {
     const pessoaJson = PessoaDao.fromPessoa(pessoa).toJson();
-    window.localStorage.setItem(`pessoa/${pessoa.nome}`, pessoaJson);
+    window.localStorage.setItem(`pessoas/${pessoa.nome}`, pessoaJson);
     await this.adicionarPessoaAoIndice(pessoa);
   }
 
