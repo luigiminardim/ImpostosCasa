@@ -265,7 +265,7 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
                             asChild
                           >
                             <Link
-                              to="/pessoas/$nomePessoa/rendimentos/$nome"
+                              to="/pessoas/$nomePessoa/gastos/$nome"
                               params={{
                                 nomePessoa: pessoa.nome,
                                 nome: gasto.nome,

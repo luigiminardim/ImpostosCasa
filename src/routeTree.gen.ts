@@ -14,6 +14,7 @@ import { Route as PessoasAdicionarNoCicloAtualRouteImport } from './routes/pesso
 import { Route as CiclosDataInicioRouteImport } from './routes/ciclos.$dataInicio'
 import { Route as PessoasNomePessoaRendimentosNomeRouteImport } from './routes/pessoas.$nomePessoa.rendimentos.$nome'
 import { Route as PessoasNomePessoaGastosAdicionarNoCicloAtualRouteImport } from './routes/pessoas.$nomePessoa.gastos.adicionarNoCicloAtual'
+import { Route as PessoasNomePessoaGastosNomeRouteImport } from './routes/pessoas.$nomePessoa.gastos.$nome'
 import { Route as PessoasNomeRendimentosAdicionarNoCicloAtualRouteImport } from './routes/pessoas.$nome.rendimentos.adicionarNoCicloAtual'
 
 const IndexRoute = IndexRouteImport.update({
@@ -44,6 +45,12 @@ const PessoasNomePessoaGastosAdicionarNoCicloAtualRoute =
     path: '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual',
     getParentRoute: () => rootRouteImport,
   } as any)
+const PessoasNomePessoaGastosNomeRoute =
+  PessoasNomePessoaGastosNomeRouteImport.update({
+    id: '/pessoas/$nomePessoa/gastos/$nome',
+    path: '/pessoas/$nomePessoa/gastos/$nome',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PessoasNomeRendimentosAdicionarNoCicloAtualRoute =
   PessoasNomeRendimentosAdicionarNoCicloAtualRouteImport.update({
     id: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual',
@@ -56,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/ciclos/$dataInicio': typeof CiclosDataInicioRoute
   '/pessoas/adicionarNoCicloAtual': typeof PessoasAdicionarNoCicloAtualRoute
   '/pessoas/$nome/rendimentos/adicionarNoCicloAtual': typeof PessoasNomeRendimentosAdicionarNoCicloAtualRoute
+  '/pessoas/$nomePessoa/gastos/$nome': typeof PessoasNomePessoaGastosNomeRoute
   '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual': typeof PessoasNomePessoaGastosAdicionarNoCicloAtualRoute
   '/pessoas/$nomePessoa/rendimentos/$nome': typeof PessoasNomePessoaRendimentosNomeRoute
 }
@@ -64,6 +72,7 @@ export interface FileRoutesByTo {
   '/ciclos/$dataInicio': typeof CiclosDataInicioRoute
   '/pessoas/adicionarNoCicloAtual': typeof PessoasAdicionarNoCicloAtualRoute
   '/pessoas/$nome/rendimentos/adicionarNoCicloAtual': typeof PessoasNomeRendimentosAdicionarNoCicloAtualRoute
+  '/pessoas/$nomePessoa/gastos/$nome': typeof PessoasNomePessoaGastosNomeRoute
   '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual': typeof PessoasNomePessoaGastosAdicionarNoCicloAtualRoute
   '/pessoas/$nomePessoa/rendimentos/$nome': typeof PessoasNomePessoaRendimentosNomeRoute
 }
@@ -73,6 +82,7 @@ export interface FileRoutesById {
   '/ciclos/$dataInicio': typeof CiclosDataInicioRoute
   '/pessoas/adicionarNoCicloAtual': typeof PessoasAdicionarNoCicloAtualRoute
   '/pessoas/$nome/rendimentos/adicionarNoCicloAtual': typeof PessoasNomeRendimentosAdicionarNoCicloAtualRoute
+  '/pessoas/$nomePessoa/gastos/$nome': typeof PessoasNomePessoaGastosNomeRoute
   '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual': typeof PessoasNomePessoaGastosAdicionarNoCicloAtualRoute
   '/pessoas/$nomePessoa/rendimentos/$nome': typeof PessoasNomePessoaRendimentosNomeRoute
 }
@@ -83,6 +93,7 @@ export interface FileRouteTypes {
     | '/ciclos/$dataInicio'
     | '/pessoas/adicionarNoCicloAtual'
     | '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
+    | '/pessoas/$nomePessoa/gastos/$nome'
     | '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
     | '/pessoas/$nomePessoa/rendimentos/$nome'
   fileRoutesByTo: FileRoutesByTo
@@ -91,6 +102,7 @@ export interface FileRouteTypes {
     | '/ciclos/$dataInicio'
     | '/pessoas/adicionarNoCicloAtual'
     | '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
+    | '/pessoas/$nomePessoa/gastos/$nome'
     | '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
     | '/pessoas/$nomePessoa/rendimentos/$nome'
   id:
@@ -99,6 +111,7 @@ export interface FileRouteTypes {
     | '/ciclos/$dataInicio'
     | '/pessoas/adicionarNoCicloAtual'
     | '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
+    | '/pessoas/$nomePessoa/gastos/$nome'
     | '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
     | '/pessoas/$nomePessoa/rendimentos/$nome'
   fileRoutesById: FileRoutesById
@@ -108,6 +121,7 @@ export interface RootRouteChildren {
   CiclosDataInicioRoute: typeof CiclosDataInicioRoute
   PessoasAdicionarNoCicloAtualRoute: typeof PessoasAdicionarNoCicloAtualRoute
   PessoasNomeRendimentosAdicionarNoCicloAtualRoute: typeof PessoasNomeRendimentosAdicionarNoCicloAtualRoute
+  PessoasNomePessoaGastosNomeRoute: typeof PessoasNomePessoaGastosNomeRoute
   PessoasNomePessoaGastosAdicionarNoCicloAtualRoute: typeof PessoasNomePessoaGastosAdicionarNoCicloAtualRoute
   PessoasNomePessoaRendimentosNomeRoute: typeof PessoasNomePessoaRendimentosNomeRoute
 }
@@ -149,6 +163,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PessoasNomePessoaGastosAdicionarNoCicloAtualRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pessoas/$nomePessoa/gastos/$nome': {
+      id: '/pessoas/$nomePessoa/gastos/$nome'
+      path: '/pessoas/$nomePessoa/gastos/$nome'
+      fullPath: '/pessoas/$nomePessoa/gastos/$nome'
+      preLoaderRoute: typeof PessoasNomePessoaGastosNomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pessoas/$nome/rendimentos/adicionarNoCicloAtual': {
       id: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
       path: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
@@ -165,6 +186,7 @@ const rootRouteChildren: RootRouteChildren = {
   PessoasAdicionarNoCicloAtualRoute: PessoasAdicionarNoCicloAtualRoute,
   PessoasNomeRendimentosAdicionarNoCicloAtualRoute:
     PessoasNomeRendimentosAdicionarNoCicloAtualRoute,
+  PessoasNomePessoaGastosNomeRoute: PessoasNomePessoaGastosNomeRoute,
   PessoasNomePessoaGastosAdicionarNoCicloAtualRoute:
     PessoasNomePessoaGastosAdicionarNoCicloAtualRoute,
   PessoasNomePessoaRendimentosNomeRoute: PessoasNomePessoaRendimentosNomeRoute,
