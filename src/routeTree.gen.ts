@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PessoasAdicionarNoCicloAtualRouteImport } from './routes/pessoas.adicionarNoCicloAtual'
 import { Route as CiclosDataInicioRouteImport } from './routes/ciclos.$dataInicio'
+import { Route as PessoasNomeRendimentosAdicionarNoCicloAtualRouteImport } from './routes/pessoas.$nome.rendimentos.adicionarNoCicloAtual'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -29,39 +30,58 @@ const CiclosDataInicioRoute = CiclosDataInicioRouteImport.update({
   path: '/ciclos/$dataInicio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PessoasNomeRendimentosAdicionarNoCicloAtualRoute =
+  PessoasNomeRendimentosAdicionarNoCicloAtualRouteImport.update({
+    id: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual',
+    path: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ciclos/$dataInicio': typeof CiclosDataInicioRoute
   '/pessoas/adicionarNoCicloAtual': typeof PessoasAdicionarNoCicloAtualRoute
+  '/pessoas/$nome/rendimentos/adicionarNoCicloAtual': typeof PessoasNomeRendimentosAdicionarNoCicloAtualRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ciclos/$dataInicio': typeof CiclosDataInicioRoute
   '/pessoas/adicionarNoCicloAtual': typeof PessoasAdicionarNoCicloAtualRoute
+  '/pessoas/$nome/rendimentos/adicionarNoCicloAtual': typeof PessoasNomeRendimentosAdicionarNoCicloAtualRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ciclos/$dataInicio': typeof CiclosDataInicioRoute
   '/pessoas/adicionarNoCicloAtual': typeof PessoasAdicionarNoCicloAtualRoute
+  '/pessoas/$nome/rendimentos/adicionarNoCicloAtual': typeof PessoasNomeRendimentosAdicionarNoCicloAtualRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ciclos/$dataInicio' | '/pessoas/adicionarNoCicloAtual'
+  fullPaths:
+    | '/'
+    | '/ciclos/$dataInicio'
+    | '/pessoas/adicionarNoCicloAtual'
+    | '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ciclos/$dataInicio' | '/pessoas/adicionarNoCicloAtual'
+  to:
+    | '/'
+    | '/ciclos/$dataInicio'
+    | '/pessoas/adicionarNoCicloAtual'
+    | '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
   id:
     | '__root__'
     | '/'
     | '/ciclos/$dataInicio'
     | '/pessoas/adicionarNoCicloAtual'
+    | '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CiclosDataInicioRoute: typeof CiclosDataInicioRoute
   PessoasAdicionarNoCicloAtualRoute: typeof PessoasAdicionarNoCicloAtualRoute
+  PessoasNomeRendimentosAdicionarNoCicloAtualRoute: typeof PessoasNomeRendimentosAdicionarNoCicloAtualRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -87,6 +107,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CiclosDataInicioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pessoas/$nome/rendimentos/adicionarNoCicloAtual': {
+      id: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
+      path: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
+      fullPath: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
+      preLoaderRoute: typeof PessoasNomeRendimentosAdicionarNoCicloAtualRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -94,6 +121,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CiclosDataInicioRoute: CiclosDataInicioRoute,
   PessoasAdicionarNoCicloAtualRoute: PessoasAdicionarNoCicloAtualRoute,
+  PessoasNomeRendimentosAdicionarNoCicloAtualRoute:
+    PessoasNomeRendimentosAdicionarNoCicloAtualRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

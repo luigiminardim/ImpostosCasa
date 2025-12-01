@@ -11,15 +11,24 @@ import {
   For,
   FormatNumber,
   Heading,
+  HStack,
   IconButton,
   Menu,
   Portal,
   Stack,
+  Status,
   Table,
+  Tag,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { LuPlus, LuUserPlus } from "react-icons/lu";
+import {
+  LuOctagonAlert,
+  LuPen,
+  LuPlus,
+  LuRefreshCcw,
+  LuUserPlus,
+} from "react-icons/lu";
 import type { CicloView } from "../usecases/CicloView";
 import { Layout } from "../view/Layout";
 import { RiParentFill } from "react-icons/ri";
@@ -142,7 +151,7 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
                           value: pessoa.rendimentosTotais,
                         },
                         {
-                          name: "Contribuição",
+                          name: "Contribuição Total",
                           value: pessoa.contribuicaoTotal,
                         },
                         {
@@ -172,7 +181,51 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
                 </Accordion.ItemBody>
                 <For each={pessoa.rendimentos}>
                   {(rendimento) => (
-                    <Accordion.ItemBody>{rendimento.nome}</Accordion.ItemBody>
+                    <Accordion.ItemBody key={rendimento.nome}>
+                      <VStack as="article" align={"stretch"} gap={1}>
+                        <HStack gap={2} flexGrow={1}>
+                          <Status.Root colorPalette="blue">
+                            <Status.Indicator />
+                          </Status.Root>{" "}
+                          <Text as="h4" flexGrow={1} flexShrink={0}>
+                            {rendimento.nome}
+                          </Text>
+                          <Text>
+                            <FormatNumber
+                              value={rendimento.valor}
+                              style="currency"
+                              currency="BRL"
+                            />
+                          </Text>
+                          <IconButton
+                            aria-label="Editar Rendimento"
+                            variant="ghost"
+                            size="xs"
+                            disabled={true}
+                          >
+                            <LuPen />
+                          </IconButton>
+                        </HStack>
+                        <HStack paddingLeft={4}>
+                          {rendimento.retidoNaFonte && (
+                            <Tag.Root colorPalette={"yellow"}>
+                              <Tag.StartElement>
+                                <LuOctagonAlert />
+                              </Tag.StartElement>
+                              <Tag.Label>Retido</Tag.Label>
+                            </Tag.Root>
+                          )}
+                          {rendimento.ciclico && (
+                            <Tag.Root colorPalette={"blue"}>
+                              <Tag.StartElement>
+                                <LuRefreshCcw />
+                              </Tag.StartElement>
+                              <Tag.Label>Cíclico</Tag.Label>
+                            </Tag.Root>
+                          )}
+                        </HStack>
+                      </VStack>
+                    </Accordion.ItemBody>
                   )}
                 </For>
               </Accordion.ItemContent>
@@ -180,21 +233,26 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
                 display={"flex"}
                 flexDirection={"row"}
                 justifyContent={"center"}
-                paddingBottom={4}
+                padding={4}
               >
                 <Menu.Root positioning={{ placement: "top" }}>
                   <Menu.Trigger asChild>
-                    <IconButton variant="solid">
-                      <LuPlus />
-                    </IconButton>
+                    <Button variant="solid" size={'sm'}>
+                      <LuPlus /> Adicionar
+                    </Button>
                   </Menu.Trigger>
                   <Portal>
                     <Menu.Positioner>
                       <Menu.Content>
-                        <Menu.Item value="new-txt">
-                          Adicionar Rendimento
+                        <Menu.Item asChild value="new-txt">
+                          <Link
+                            to={`/pessoas/$nome/rendimentos/adicionarNoCicloAtual`}
+                            params={{ nome: pessoa.nome }}
+                          >
+                            Novo Rendimento
+                          </Link>
                         </Menu.Item>
-                        <Menu.Item value="new-file">Adicionar Gasto</Menu.Item>
+                        <Menu.Item value="new-file">Novo Gasto</Menu.Item>
                       </Menu.Content>
                     </Menu.Positioner>
                   </Portal>

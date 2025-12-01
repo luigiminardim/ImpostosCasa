@@ -139,9 +139,9 @@ export class Ciclo {
     return dadosFinanceirosPessoa.rendimentos;
   }
 
-  adicionarRendimento(pessoa: Pessoa, rendimento: Rendimento) {
+  adicionarRendimento(nomePessoa: Pessoa["nome"], rendimento: Rendimento) {
     const dadosFinanceirosPessoa = this.dadosFinanceiros.find(
-      (dado) => dado.pessoa.nome === pessoa.nome
+      (dado) => dado.pessoa.nome === nomePessoa
     );
     if (!dadosFinanceirosPessoa) {
       console.trace("Pessoa não encontrada no ciclo.");

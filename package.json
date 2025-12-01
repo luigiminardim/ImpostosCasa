@@ -13,6 +13,9 @@
   "dependencies": {
     "@chakra-ui/react": "^3.29.0",
     "@emotion/react": "^11.14.0",
+    "@maskito/core": "^4.0.1",
+    "@maskito/kit": "^4.0.1",
+    "@maskito/react": "^4.0.1",
     "@tanstack/react-form": "^1.25.0",
     "@tanstack/react-query": "^5.90.10",
     "@tanstack/react-router": "^1.136.8",
