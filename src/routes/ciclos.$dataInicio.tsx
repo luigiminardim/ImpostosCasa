@@ -155,8 +155,12 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
                           value: pessoa.contribuicaoTotal,
                         },
                         {
-                          name: "Gastos Dedutíveis",
-                          value: pessoa.gastosDedutiveisTotais,
+                          name: "Gasto Total",
+                          value: pessoa.gastosTotais,
+                        },
+                        {
+                          name: "Gastos Restituídos",
+                          value: pessoa.gastosRestituidosTotais,
                         },
                         {
                           name: "Benefício Total",
@@ -236,6 +240,62 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
                     </Accordion.ItemBody>
                   )}
                 </For>
+                <For each={pessoa.gastos}>
+                  {(gasto) => (
+                    <Accordion.ItemBody key={gasto.nome}>
+                      <VStack as="article" align={"stretch"} gap={1}>
+                        <HStack gap={2} flexGrow={1}>
+                          <Status.Root colorPalette="yellow">
+                            <Status.Indicator />
+                          </Status.Root>{" "}
+                          <Text as="h4" flexGrow={1} flexShrink={0}>
+                            {gasto.nome}
+                          </Text>
+                          <Text>
+                            <FormatNumber
+                              value={gasto.valor}
+                              style="currency"
+                              currency="BRL"
+                            />
+                          </Text>
+                          <IconButton
+                            aria-label="Editar Gasto"
+                            variant="outline"
+                            size="xs"
+                            asChild
+                          >
+                            <Link
+                              to="/pessoas/$nomePessoa/rendimentos/$nome"
+                              params={{
+                                nomePessoa: pessoa.nome,
+                                nome: gasto.nome,
+                              }}
+                            >
+                              <LuPen />
+                            </Link>
+                          </IconButton>
+                        </HStack>
+                        <HStack paddingLeft={4}>
+                          {!!gasto.pagador && (
+                            <Tag.Root colorPalette={"blue"}>
+                              <Tag.Label>
+                                <b>Pagador:</b> {gasto.pagador.nome}
+                              </Tag.Label>
+                            </Tag.Root>
+                          )}
+                          {gasto.ciclico && (
+                            <Tag.Root colorPalette={"blue"}>
+                              <Tag.StartElement>
+                                <LuRefreshCcw />
+                              </Tag.StartElement>
+                              <Tag.Label>Cíclico</Tag.Label>
+                            </Tag.Root>
+                          )}
+                        </HStack>
+                      </VStack>
+                    </Accordion.ItemBody>
+                  )}
+                </For>
               </Accordion.ItemContent>
               <Accordion.ItemContent
                 display={"flex"}
@@ -260,7 +320,14 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
                             Novo Rendimento
                           </Link>
                         </Menu.Item>
-                        <Menu.Item value="new-file">Novo Gasto</Menu.Item>
+                        <Menu.Item value="new-file">
+                          <Link
+                            to="/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual"
+                            params={{ nomePessoa: pessoa.nome }}
+                          >
+                            Novo Gasto
+                          </Link>
+                        </Menu.Item>
                       </Menu.Content>
                     </Menu.Positioner>
                   </Portal>

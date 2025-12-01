@@ -158,9 +158,7 @@ export class Ciclo {
     ];
   }
 
-  gastosDedutiveisDaPessoa(
-    pessoa: Pessoa
-  ): { beneficiario: null | Pessoa; gasto: Gasto }[] {
+  gastosDaPessoa(pessoa: Pessoa): Gasto[] {
     const dadosFinanceirosPessoa = this.dadosFinanceiros.find(
       (dado) => dado.pessoa.nome === pessoa.nome
     );
@@ -168,41 +166,32 @@ export class Ciclo {
       console.trace("Pessoa não encontrada no ciclo.");
       return [];
     }
-    const gastosPelaCasa = dadosFinanceirosPessoa.gastos.map((gasto) => ({
-      beneficiario: null,
-      gasto,
-    }));
-    const gastosPorOutrasPessoas: {
-      beneficiario: null | Pessoa;
-      gasto: Gasto;
-    }[] = this.dadosFinanceiros.flatMap((dado) =>
+    return dadosFinanceirosPessoa.gastos;
+  }
+
+  gastosRestituiveisDaPessoa(
+    pessoa: Pessoa
+  ): { beneficiario: null | Pessoa; gasto: Gasto }[] {
+    const gastosEmQueEhPagador = this.dadosFinanceiros.flatMap((dado) =>
       dado.gastos
         .filter((gasto) => gasto.pagador?.nome === pessoa.nome)
         .map((gasto) => ({ beneficiario: dado.pessoa, gasto }))
     );
-    return [...gastosPelaCasa, ...gastosPorOutrasPessoas];
+    return gastosEmQueEhPagador;
   }
 
-  recebimentosDedutiveisDaPessoa(
-    pessoa: Pessoa
-  ): { pagador: null | Pessoa; gasto: Gasto }[] {
-    const recebimentosDeOutrasPessoas = this.dadosFinanceiros.flatMap((dado) =>
-      dado.gastos
-        .filter((gasto) => gasto.pagador?.nome === pessoa.nome)
-        .map((gasto) => ({ pagador: gasto.pagador, gasto }))
-    );
-    return recebimentosDeOutrasPessoas;
-  }
-
-  adicionarGasto(pessoa: Pessoa, gasto: Gasto) {
+  adicionarGasto(nomePessoa: Pessoa["nome"], gasto: Gasto) {
     const dadosFinanceirosPessoa = this.dadosFinanceiros.find(
-      (dado) => dado.pessoa.nome === pessoa.nome
+      (dado) => dado.pessoa.nome === nomePessoa
     );
     if (!dadosFinanceirosPessoa) {
       console.trace("Pessoa não encontrada no ciclo.");
       return;
     }
-    dadosFinanceirosPessoa.gastos.push(gasto);
+    dadosFinanceirosPessoa.gastos = [
+      ...dadosFinanceirosPessoa.gastos.filter((g) => g.nome !== gasto.nome),
+      gasto,
+    ];
   }
 
   politicaImposto(): PoliticaImposto {

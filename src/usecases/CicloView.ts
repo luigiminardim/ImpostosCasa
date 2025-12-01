@@ -10,7 +10,8 @@ type PessoaView = {
   gastos: Gasto[];
 
   // Contribuinte e Depentente
-  gastosDedutiveisTotais: number;
+  gastosTotais: number;
+  gastosRestituidosTotais: number;
   rendimentosTotais: number;
 
   // Contribuinte
@@ -54,8 +55,8 @@ export class CicloView {
     const relatorioPessoa = relatorio.relatorioPessoa(pessoa.nome);
     if (!relatorioPessoa)
       throw new Error(`pessoa ${pessoa.nome} não encontrada no relatório`);
-    const gastosDedutiveisTotais =
-      relatorioPessoa.relatorio.gastosDedutiveisTotais;
+    const gastosRestituidosTotais =
+      relatorioPessoa.relatorio.gastosRestituiveisTotais;
     const rendimentosTotais = relatorioPessoa.relatorio.rendimentosTotais;
     const { beneficiosTotais, aReceber, contribuicaoTotal, aPagar } =
       relatorioPessoa.ehDependente
@@ -77,7 +78,8 @@ export class CicloView {
       ehDependente: dadoFinanceiro.ehDependente,
       rendimentos: dadoFinanceiro.rendimentos,
       gastos: dadoFinanceiro.gastos,
-      gastosDedutiveisTotais,
+      gastosTotais: relatorioPessoa.relatorio.gastosTotais,
+      gastosRestituidosTotais,
       rendimentosTotais,
       beneficiosTotais,
       aReceber,
