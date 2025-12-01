@@ -3,7 +3,7 @@ import type { Gasto } from "../domain/Gasto";
 import { RelatorioCiclo } from "../domain/RelatorioCiclo";
 import type { Rendimento } from "../domain/Rendimento";
 
-type PessoaView = {
+export type PessoaView = {
   nome: string;
   ehDependente: boolean;
   rendimentos: Rendimento[];

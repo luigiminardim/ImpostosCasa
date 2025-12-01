@@ -1,6 +1,9 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { obterCicloUsecase } from "../usecases/usecases";
-import { useCiclo } from "../view/useCiclo";
+import {
+  excluirRendimentoUsecase,
+  obterCicloUsecase,
+} from "../usecases/usecases";
+import { useCiclo, useInvalidateCiclos } from "../view/useCiclo";
 import {
   Accordion,
   Avatar,
@@ -27,11 +30,15 @@ import {
   LuPen,
   LuPlus,
   LuRefreshCcw,
+  LuTrash2,
   LuUserPlus,
 } from "react-icons/lu";
-import type { CicloView } from "../usecases/CicloView";
+import type { CicloView, PessoaView } from "../usecases/CicloView";
 import { Layout } from "../view/Layout";
 import { RiParentFill } from "react-icons/ri";
+import type { Rendimento } from "../domain/Rendimento";
+import { TbDotsVertical } from "react-icons/tb";
+import { useMutation } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/ciclos/$dataInicio")({
   component: CicloPage,
@@ -61,7 +68,10 @@ function CicloPage() {
   return (
     <Layout title="Imposto Família" footer={<ResumoFooter ciclo={ciclo} />}>
       {ciclo.pessoas.length > 0 ? (
-        <PessoasSection pessoas={ciclo.pessoas} />
+        <PessoasSection
+          pessoas={ciclo.pessoas}
+          cicloEncerrado={ciclo.encerrado}
+        />
       ) : (
         <EmptyPessoasSection />
       )}
@@ -95,7 +105,13 @@ function EmptyPessoasSection() {
   );
 }
 
-function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
+function PessoasSection({
+  pessoas,
+  cicloEncerrado,
+}: {
+  pessoas: CicloView["pessoas"];
+  cicloEncerrado: boolean;
+}) {
   return (
     <VStack as="section" flexGrow={1} gap={8}>
       <Accordion.Root collapsible as="section">
@@ -186,57 +202,11 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
                 <For each={pessoa.rendimentos}>
                   {(rendimento) => (
                     <Accordion.ItemBody key={rendimento.nome}>
-                      <VStack as="article" align={"stretch"} gap={1}>
-                        <HStack gap={2} flexGrow={1}>
-                          <Status.Root colorPalette="blue">
-                            <Status.Indicator />
-                          </Status.Root>{" "}
-                          <Text as="h4" flexGrow={1} flexShrink={0}>
-                            {rendimento.nome}
-                          </Text>
-                          <Text>
-                            <FormatNumber
-                              value={rendimento.valor}
-                              style="currency"
-                              currency="BRL"
-                            />
-                          </Text>
-                          <IconButton
-                            aria-label="Editar Rendimento"
-                            variant="outline"
-                            size="xs"
-                            asChild
-                          >
-                            <Link
-                              to="/pessoas/$nomePessoa/rendimentos/$nome"
-                              params={{
-                                nomePessoa: pessoa.nome,
-                                nome: rendimento.nome,
-                              }}
-                            >
-                              <LuPen />
-                            </Link>
-                          </IconButton>
-                        </HStack>
-                        <HStack paddingLeft={4}>
-                          {rendimento.retidoNaFonte && (
-                            <Tag.Root colorPalette={"yellow"}>
-                              <Tag.StartElement>
-                                <LuOctagonAlert />
-                              </Tag.StartElement>
-                              <Tag.Label>Retido</Tag.Label>
-                            </Tag.Root>
-                          )}
-                          {rendimento.ciclico && (
-                            <Tag.Root colorPalette={"blue"}>
-                              <Tag.StartElement>
-                                <LuRefreshCcw />
-                              </Tag.StartElement>
-                              <Tag.Label>Cíclico</Tag.Label>
-                            </Tag.Root>
-                          )}
-                        </HStack>
-                      </VStack>
+                      <RendimentoArticle
+                        nomePessoa={pessoa.nome}
+                        rendimento={rendimento}
+                        cicloEncerrado={cicloEncerrado}
+                      />
                     </Accordion.ItemBody>
                   )}
                 </For>
@@ -342,6 +312,104 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
           <LuUserPlus /> Adicionar Pessoa
         </Link>
       </Button>
+    </VStack>
+  );
+}
+
+function RendimentoArticle({
+  nomePessoa,
+  rendimento,
+  cicloEncerrado,
+}: {
+  nomePessoa: PessoaView["nome"];
+  rendimento: Rendimento;
+  cicloEncerrado: boolean;
+}) {
+  const invalidateCiclos = useInvalidateCiclos();
+  const { mutate: excluirRendimento, isPending } = useMutation({
+    mutationFn: () =>
+      excluirRendimentoUsecase.excluirRendimentoDoCicloAtual(
+        nomePessoa,
+        rendimento.nome
+      ),
+    onSuccess: () => {
+      invalidateCiclos();
+    },
+  });
+
+  return (
+    <VStack as="article" align={"stretch"} gap={1}>
+      <HStack gap={2} flexGrow={1}>
+        <Status.Root colorPalette="blue">
+          <Status.Indicator />
+        </Status.Root>{" "}
+        <Text as="h4" flexGrow={1} flexShrink={0}>
+          {rendimento.nome}
+        </Text>
+        <Text>
+          <FormatNumber
+            value={rendimento.valor}
+            style="currency"
+            currency="BRL"
+          />
+        </Text>
+        {!cicloEncerrado && (
+          <Menu.Root>
+            <Menu.Trigger asChild>
+              <IconButton
+                aria-label="Opções do Rendimento"
+                variant="subtle"
+                size="sm"
+              >
+                <TbDotsVertical />
+              </IconButton>
+            </Menu.Trigger>
+            <Portal>
+              <Menu.Positioner>
+                <Menu.Content>
+                  <Menu.Item value="Editar Rendimento" asChild>
+                    <Link
+                      to="/pessoas/$nomePessoa/rendimentos/$nome"
+                      params={{
+                        nomePessoa: nomePessoa,
+                        nome: rendimento.nome,
+                      }}
+                    >
+                      <LuPen />
+                      Editar
+                    </Link>
+                  </Menu.Item>
+                  <Menu.Item
+                    value="Editar Rendimento"
+                    onClick={() => excluirRendimento(undefined, {})}
+                  >
+                    <LuTrash2 />
+                    Excluir
+                  </Menu.Item>
+                </Menu.Content>
+              </Menu.Positioner>
+            </Portal>
+          </Menu.Root>
+        )}
+      </HStack>
+      <HStack paddingLeft={4}>
+        {rendimento.retidoNaFonte && (
+          <Tag.Root colorPalette={"yellow"}>
+            <Tag.StartElement>
+              <LuOctagonAlert />
+            </Tag.StartElement>
+            <Tag.Label>Retido</Tag.Label>
+          </Tag.Root>
+        )}
+        {rendimento.ciclico && (
+          <Tag.Root colorPalette={"blue"}>
+            <Tag.StartElement>
+              <LuRefreshCcw />
+            </Tag.StartElement>
+            <Tag.Label>Cíclico</Tag.Label>
+          </Tag.Root>
+        )}
+      </HStack>
     </VStack>
   );
 }
