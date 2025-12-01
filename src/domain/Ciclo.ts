@@ -139,6 +139,9 @@ export class Ciclo {
     return dadosFinanceirosPessoa.rendimentos;
   }
 
+  /**
+   * Adiciona ou atualiza um rendimento para a pessoa no ciclo.
+   */
   adicionarRendimento(nomePessoa: Pessoa["nome"], rendimento: Rendimento) {
     const dadosFinanceirosPessoa = this.dadosFinanceiros.find(
       (dado) => dado.pessoa.nome === nomePessoa
@@ -147,7 +150,12 @@ export class Ciclo {
       console.trace("Pessoa não encontrada no ciclo.");
       return;
     }
-    dadosFinanceirosPessoa.rendimentos.push(rendimento);
+    dadosFinanceirosPessoa.rendimentos = [
+      ...dadosFinanceirosPessoa.rendimentos.filter(
+        (r) => r.nome !== rendimento.nome
+      ),
+      rendimento,
+    ];
   }
 
   gastosDedutiveisDaPessoa(

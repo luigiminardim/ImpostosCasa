@@ -201,9 +201,17 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
                             aria-label="Editar Rendimento"
                             variant="ghost"
                             size="xs"
-                            disabled={true}
+                            asChild
                           >
-                            <LuPen />
+                            <Link
+                              to="/pessoas/$nomePessoa/rendimentos/$nome"
+                              params={{
+                                nomePessoa: pessoa.nome,
+                                nome: rendimento.nome,
+                              }}
+                            >
+                              <LuPen />
+                            </Link>
                           </IconButton>
                         </HStack>
                         <HStack paddingLeft={4}>
@@ -237,7 +245,7 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
               >
                 <Menu.Root positioning={{ placement: "top" }}>
                   <Menu.Trigger asChild>
-                    <Button variant="solid" size={'sm'}>
+                    <Button variant="solid" size={"sm"}>
                       <LuPlus /> Adicionar
                     </Button>
                   </Menu.Trigger>
