@@ -175,6 +175,20 @@ export class Ciclo {
       );
   }
 
+  excluirGastoDaPessoa(nomePessoa: Pessoa["nome"], nome: Gasto["nome"]) {
+    const dadosFinanceirosPessoa = this.dadosFinanceiros.find(
+      (dado) => dado.pessoa.nome === nomePessoa
+    );
+    if (!dadosFinanceirosPessoa) {
+      console.trace("Pessoa não encontrada no ciclo.");
+      return;
+    }
+    dadosFinanceirosPessoa.gastos =
+      dadosFinanceirosPessoa.gastos.filter(
+        (gasto) => gasto.nome !== nome
+      );
+  }
+
   gastosDaPessoa(pessoa: Pessoa): Gasto[] {
     const dadosFinanceirosPessoa = this.dadosFinanceiros.find(
       (dado) => dado.pessoa.nome === pessoa.nome

@@ -1,5 +1,6 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import {
+  excluirGastoUsecase,
   excluirRendimentoUsecase,
   obterCicloUsecase,
 } from "../usecases/usecases";
@@ -39,6 +40,7 @@ import { RiParentFill } from "react-icons/ri";
 import type { Rendimento } from "../domain/Rendimento";
 import { TbDotsVertical } from "react-icons/tb";
 import { useMutation } from "@tanstack/react-query";
+import type { Gasto } from "../domain/Gasto";
 
 export const Route = createFileRoute("/ciclos/$dataInicio")({
   component: CicloPage,
@@ -213,56 +215,11 @@ function PessoasSection({
                 <For each={pessoa.gastos}>
                   {(gasto) => (
                     <Accordion.ItemBody key={gasto.nome}>
-                      <VStack as="article" align={"stretch"} gap={1}>
-                        <HStack gap={2} flexGrow={1}>
-                          <Status.Root colorPalette="yellow">
-                            <Status.Indicator />
-                          </Status.Root>{" "}
-                          <Text as="h4" flexGrow={1} flexShrink={0}>
-                            {gasto.nome}
-                          </Text>
-                          <Text>
-                            <FormatNumber
-                              value={gasto.valor}
-                              style="currency"
-                              currency="BRL"
-                            />
-                          </Text>
-                          <IconButton
-                            aria-label="Editar Gasto"
-                            variant="outline"
-                            size="xs"
-                            asChild
-                          >
-                            <Link
-                              to="/pessoas/$nomePessoa/gastos/$nome"
-                              params={{
-                                nomePessoa: pessoa.nome,
-                                nome: gasto.nome,
-                              }}
-                            >
-                              <LuPen />
-                            </Link>
-                          </IconButton>
-                        </HStack>
-                        <HStack paddingLeft={4}>
-                          {!!gasto.pagador && (
-                            <Tag.Root colorPalette={"blue"}>
-                              <Tag.Label>
-                                <b>Pagador:</b> {gasto.pagador.nome}
-                              </Tag.Label>
-                            </Tag.Root>
-                          )}
-                          {gasto.ciclico && (
-                            <Tag.Root colorPalette={"blue"}>
-                              <Tag.StartElement>
-                                <LuRefreshCcw />
-                              </Tag.StartElement>
-                              <Tag.Label>Cíclico</Tag.Label>
-                            </Tag.Root>
-                          )}
-                        </HStack>
-                      </VStack>
+                      <GastoArticle
+                        nomePessoa={pessoa.nome}
+                        gasto={gasto}
+                        cicloEncerrado={cicloEncerrado}
+                      />
                     </Accordion.ItemBody>
                   )}
                 </For>
@@ -326,7 +283,7 @@ function RendimentoArticle({
   cicloEncerrado: boolean;
 }) {
   const invalidateCiclos = useInvalidateCiclos();
-  const { mutate: excluirRendimento, isPending } = useMutation({
+  const { mutate: excluirRendimento } = useMutation({
     mutationFn: () =>
       excluirRendimentoUsecase.excluirRendimentoDoCicloAtual(
         nomePessoa,
@@ -381,7 +338,7 @@ function RendimentoArticle({
                   </Menu.Item>
                   <Menu.Item
                     value="Editar Rendimento"
-                    onClick={() => excluirRendimento(undefined, {})}
+                    onClick={() => excluirRendimento()}
                   >
                     <LuTrash2 />
                     Excluir
@@ -402,6 +359,95 @@ function RendimentoArticle({
           </Tag.Root>
         )}
         {rendimento.ciclico && (
+          <Tag.Root colorPalette={"blue"}>
+            <Tag.StartElement>
+              <LuRefreshCcw />
+            </Tag.StartElement>
+            <Tag.Label>Cíclico</Tag.Label>
+          </Tag.Root>
+        )}
+      </HStack>
+    </VStack>
+  );
+}
+
+function GastoArticle({
+  nomePessoa,
+  gasto,
+  cicloEncerrado,
+}: {
+  nomePessoa: PessoaView["nome"];
+  gasto: Gasto;
+  cicloEncerrado: boolean;
+}) {
+  const invalidateCiclos = useInvalidateCiclos();
+  const { mutate: excluirGasto } = useMutation({
+    mutationFn: () =>
+      excluirGastoUsecase.excluirGastoDoCicloAtual(nomePessoa, gasto.nome),
+    onSuccess: () => {
+      invalidateCiclos();
+    },
+  });
+  return (
+    <VStack as="article" align={"stretch"} gap={1}>
+      <HStack gap={2} flexGrow={1}>
+        <Status.Root colorPalette="yellow">
+          <Status.Indicator />
+        </Status.Root>{" "}
+        <Text as="h4" flexGrow={1} flexShrink={0}>
+          {gasto.nome}
+        </Text>
+        <Text>
+          <FormatNumber value={gasto.valor} style="currency" currency="BRL" />
+        </Text>
+        {!cicloEncerrado && (
+          <Menu.Root>
+            <Menu.Trigger asChild>
+              <IconButton
+                aria-label="Opções do Rendimento"
+                variant="subtle"
+                size="sm"
+              >
+                <TbDotsVertical />
+              </IconButton>
+            </Menu.Trigger>
+            <Portal>
+              <Menu.Positioner>
+                <Menu.Content>
+                  <Menu.Item value="Editar Rendimento" asChild>
+                    <Link
+                      to="/pessoas/$nomePessoa/gastos/$nome"
+                      params={{
+                        nomePessoa: nomePessoa,
+                        nome: gasto.nome,
+                      }}
+                    >
+                      <LuPen />
+                      Editar
+                    </Link>
+                  </Menu.Item>
+                  <Menu.Item
+                    value="Editar Rendimento"
+                    onClick={() => excluirGasto()}
+                  >
+                    <LuTrash2 />
+                    Excluir
+                  </Menu.Item>
+                </Menu.Content>
+              </Menu.Positioner>
+            </Portal>
+          </Menu.Root>
+        )}
+      </HStack>
+      <HStack paddingLeft={4}>
+        {!!gasto.pagador && (
+          <Tag.Root colorPalette={"blue"}>
+            <Tag.Label>
+              <b>Pagador:</b> {gasto.pagador.nome}
+            </Tag.Label>
+          </Tag.Root>
+        )}
+        {gasto.ciclico && (
           <Tag.Root colorPalette={"blue"}>
             <Tag.StartElement>
               <LuRefreshCcw />
