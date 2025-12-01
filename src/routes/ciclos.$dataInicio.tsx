@@ -199,7 +199,7 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
                           </Text>
                           <IconButton
                             aria-label="Editar Rendimento"
-                            variant="ghost"
+                            variant="outline"
                             size="xs"
                             asChild
                           >
@@ -270,7 +270,7 @@ function PessoasSection({ pessoas }: { pessoas: CicloView["pessoas"] }) {
           )}
         </For>
       </Accordion.Root>
-      <Button asChild size="sm" variant={"surface"}>
+      <Button asChild variant={"outline"}>
         <Link to={`/pessoas/adicionarNoCicloAtual`}>
           <LuUserPlus /> Adicionar Pessoa
         </Link>
