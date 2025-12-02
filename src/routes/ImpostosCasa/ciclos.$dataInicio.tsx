@@ -235,7 +235,7 @@ function PessoasSection({
                   <Portal>
                     <Menu.Positioner>
                       <Menu.Content>
-                        <Menu.Item asChild value="Novo Rendimento">
+                        <Menu.Item value="Novo Rendimento" asChild>
                           <Link
                             to={`/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual`}
                             params={{ nome: pessoa.nome }}
@@ -243,7 +243,7 @@ function PessoasSection({
                             Novo Rendimento
                           </Link>
                         </Menu.Item>
-                        <Menu.Item value="Novo Gasto">
+                        <Menu.Item value="Novo Gasto" asChild>
                           <Link
                             to="/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual"
                             params={{ nomePessoa: pessoa.nome }}
