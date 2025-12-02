@@ -9,187 +9,191 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as PessoasAdicionarNoCicloAtualRouteImport } from './routes/pessoas.adicionarNoCicloAtual'
-import { Route as CiclosDataInicioRouteImport } from './routes/ciclos.$dataInicio'
-import { Route as PessoasNomePessoaRendimentosNomeRouteImport } from './routes/pessoas.$nomePessoa.rendimentos.$nome'
-import { Route as PessoasNomePessoaGastosAdicionarNoCicloAtualRouteImport } from './routes/pessoas.$nomePessoa.gastos.adicionarNoCicloAtual'
-import { Route as PessoasNomePessoaGastosNomeRouteImport } from './routes/pessoas.$nomePessoa.gastos.$nome'
-import { Route as PessoasNomeRendimentosAdicionarNoCicloAtualRouteImport } from './routes/pessoas.$nome.rendimentos.adicionarNoCicloAtual'
+import { Route as ImpostosCasaIndexRouteImport } from './routes/ImpostosCasa/index'
+import { Route as ImpostosCasaPessoasAdicionarNoCicloAtualRouteImport } from './routes/ImpostosCasa/pessoas.adicionarNoCicloAtual'
+import { Route as ImpostosCasaCiclosDataInicioRouteImport } from './routes/ImpostosCasa/ciclos.$dataInicio'
+import { Route as ImpostosCasaPessoasNomePessoaRendimentosNomeRouteImport } from './routes/ImpostosCasa/pessoas.$nomePessoa.rendimentos.$nome'
+import { Route as ImpostosCasaPessoasNomePessoaGastosAdicionarNoCicloAtualRouteImport } from './routes/ImpostosCasa/pessoas.$nomePessoa.gastos.adicionarNoCicloAtual'
+import { Route as ImpostosCasaPessoasNomePessoaGastosNomeRouteImport } from './routes/ImpostosCasa/pessoas.$nomePessoa.gastos.$nome'
+import { Route as ImpostosCasaPessoasNomeRendimentosAdicionarNoCicloAtualRouteImport } from './routes/ImpostosCasa/pessoas.$nome.rendimentos.adicionarNoCicloAtual'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ImpostosCasaIndexRoute = ImpostosCasaIndexRouteImport.update({
+  id: '/ImpostosCasa/',
+  path: '/ImpostosCasa/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PessoasAdicionarNoCicloAtualRoute =
-  PessoasAdicionarNoCicloAtualRouteImport.update({
-    id: '/pessoas/adicionarNoCicloAtual',
-    path: '/pessoas/adicionarNoCicloAtual',
+const ImpostosCasaPessoasAdicionarNoCicloAtualRoute =
+  ImpostosCasaPessoasAdicionarNoCicloAtualRouteImport.update({
+    id: '/ImpostosCasa/pessoas/adicionarNoCicloAtual',
+    path: '/ImpostosCasa/pessoas/adicionarNoCicloAtual',
     getParentRoute: () => rootRouteImport,
   } as any)
-const CiclosDataInicioRoute = CiclosDataInicioRouteImport.update({
-  id: '/ciclos/$dataInicio',
-  path: '/ciclos/$dataInicio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PessoasNomePessoaRendimentosNomeRoute =
-  PessoasNomePessoaRendimentosNomeRouteImport.update({
-    id: '/pessoas/$nomePessoa/rendimentos/$nome',
-    path: '/pessoas/$nomePessoa/rendimentos/$nome',
+const ImpostosCasaCiclosDataInicioRoute =
+  ImpostosCasaCiclosDataInicioRouteImport.update({
+    id: '/ImpostosCasa/ciclos/$dataInicio',
+    path: '/ImpostosCasa/ciclos/$dataInicio',
     getParentRoute: () => rootRouteImport,
   } as any)
-const PessoasNomePessoaGastosAdicionarNoCicloAtualRoute =
-  PessoasNomePessoaGastosAdicionarNoCicloAtualRouteImport.update({
-    id: '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual',
-    path: '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual',
+const ImpostosCasaPessoasNomePessoaRendimentosNomeRoute =
+  ImpostosCasaPessoasNomePessoaRendimentosNomeRouteImport.update({
+    id: '/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome',
+    path: '/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome',
     getParentRoute: () => rootRouteImport,
   } as any)
-const PessoasNomePessoaGastosNomeRoute =
-  PessoasNomePessoaGastosNomeRouteImport.update({
-    id: '/pessoas/$nomePessoa/gastos/$nome',
-    path: '/pessoas/$nomePessoa/gastos/$nome',
+const ImpostosCasaPessoasNomePessoaGastosAdicionarNoCicloAtualRoute =
+  ImpostosCasaPessoasNomePessoaGastosAdicionarNoCicloAtualRouteImport.update({
+    id: '/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual',
+    path: '/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual',
     getParentRoute: () => rootRouteImport,
   } as any)
-const PessoasNomeRendimentosAdicionarNoCicloAtualRoute =
-  PessoasNomeRendimentosAdicionarNoCicloAtualRouteImport.update({
-    id: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual',
-    path: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual',
+const ImpostosCasaPessoasNomePessoaGastosNomeRoute =
+  ImpostosCasaPessoasNomePessoaGastosNomeRouteImport.update({
+    id: '/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome',
+    path: '/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ImpostosCasaPessoasNomeRendimentosAdicionarNoCicloAtualRoute =
+  ImpostosCasaPessoasNomeRendimentosAdicionarNoCicloAtualRouteImport.update({
+    id: '/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual',
+    path: '/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual',
     getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/ciclos/$dataInicio': typeof CiclosDataInicioRoute
-  '/pessoas/adicionarNoCicloAtual': typeof PessoasAdicionarNoCicloAtualRoute
-  '/pessoas/$nome/rendimentos/adicionarNoCicloAtual': typeof PessoasNomeRendimentosAdicionarNoCicloAtualRoute
-  '/pessoas/$nomePessoa/gastos/$nome': typeof PessoasNomePessoaGastosNomeRoute
-  '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual': typeof PessoasNomePessoaGastosAdicionarNoCicloAtualRoute
-  '/pessoas/$nomePessoa/rendimentos/$nome': typeof PessoasNomePessoaRendimentosNomeRoute
+  '/ImpostosCasa': typeof ImpostosCasaIndexRoute
+  '/ImpostosCasa/ciclos/$dataInicio': typeof ImpostosCasaCiclosDataInicioRoute
+  '/ImpostosCasa/pessoas/adicionarNoCicloAtual': typeof ImpostosCasaPessoasAdicionarNoCicloAtualRoute
+  '/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual': typeof ImpostosCasaPessoasNomeRendimentosAdicionarNoCicloAtualRoute
+  '/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome': typeof ImpostosCasaPessoasNomePessoaGastosNomeRoute
+  '/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual': typeof ImpostosCasaPessoasNomePessoaGastosAdicionarNoCicloAtualRoute
+  '/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome': typeof ImpostosCasaPessoasNomePessoaRendimentosNomeRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/ciclos/$dataInicio': typeof CiclosDataInicioRoute
-  '/pessoas/adicionarNoCicloAtual': typeof PessoasAdicionarNoCicloAtualRoute
-  '/pessoas/$nome/rendimentos/adicionarNoCicloAtual': typeof PessoasNomeRendimentosAdicionarNoCicloAtualRoute
-  '/pessoas/$nomePessoa/gastos/$nome': typeof PessoasNomePessoaGastosNomeRoute
-  '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual': typeof PessoasNomePessoaGastosAdicionarNoCicloAtualRoute
-  '/pessoas/$nomePessoa/rendimentos/$nome': typeof PessoasNomePessoaRendimentosNomeRoute
+  '/ImpostosCasa': typeof ImpostosCasaIndexRoute
+  '/ImpostosCasa/ciclos/$dataInicio': typeof ImpostosCasaCiclosDataInicioRoute
+  '/ImpostosCasa/pessoas/adicionarNoCicloAtual': typeof ImpostosCasaPessoasAdicionarNoCicloAtualRoute
+  '/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual': typeof ImpostosCasaPessoasNomeRendimentosAdicionarNoCicloAtualRoute
+  '/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome': typeof ImpostosCasaPessoasNomePessoaGastosNomeRoute
+  '/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual': typeof ImpostosCasaPessoasNomePessoaGastosAdicionarNoCicloAtualRoute
+  '/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome': typeof ImpostosCasaPessoasNomePessoaRendimentosNomeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/ciclos/$dataInicio': typeof CiclosDataInicioRoute
-  '/pessoas/adicionarNoCicloAtual': typeof PessoasAdicionarNoCicloAtualRoute
-  '/pessoas/$nome/rendimentos/adicionarNoCicloAtual': typeof PessoasNomeRendimentosAdicionarNoCicloAtualRoute
-  '/pessoas/$nomePessoa/gastos/$nome': typeof PessoasNomePessoaGastosNomeRoute
-  '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual': typeof PessoasNomePessoaGastosAdicionarNoCicloAtualRoute
-  '/pessoas/$nomePessoa/rendimentos/$nome': typeof PessoasNomePessoaRendimentosNomeRoute
+  '/ImpostosCasa/': typeof ImpostosCasaIndexRoute
+  '/ImpostosCasa/ciclos/$dataInicio': typeof ImpostosCasaCiclosDataInicioRoute
+  '/ImpostosCasa/pessoas/adicionarNoCicloAtual': typeof ImpostosCasaPessoasAdicionarNoCicloAtualRoute
+  '/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual': typeof ImpostosCasaPessoasNomeRendimentosAdicionarNoCicloAtualRoute
+  '/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome': typeof ImpostosCasaPessoasNomePessoaGastosNomeRoute
+  '/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual': typeof ImpostosCasaPessoasNomePessoaGastosAdicionarNoCicloAtualRoute
+  '/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome': typeof ImpostosCasaPessoasNomePessoaRendimentosNomeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/ciclos/$dataInicio'
-    | '/pessoas/adicionarNoCicloAtual'
-    | '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
-    | '/pessoas/$nomePessoa/gastos/$nome'
-    | '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
-    | '/pessoas/$nomePessoa/rendimentos/$nome'
+    | '/ImpostosCasa'
+    | '/ImpostosCasa/ciclos/$dataInicio'
+    | '/ImpostosCasa/pessoas/adicionarNoCicloAtual'
+    | '/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
+    | '/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome'
+    | '/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
+    | '/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/ciclos/$dataInicio'
-    | '/pessoas/adicionarNoCicloAtual'
-    | '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
-    | '/pessoas/$nomePessoa/gastos/$nome'
-    | '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
-    | '/pessoas/$nomePessoa/rendimentos/$nome'
+    | '/ImpostosCasa'
+    | '/ImpostosCasa/ciclos/$dataInicio'
+    | '/ImpostosCasa/pessoas/adicionarNoCicloAtual'
+    | '/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
+    | '/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome'
+    | '/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
+    | '/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome'
   id:
     | '__root__'
-    | '/'
-    | '/ciclos/$dataInicio'
-    | '/pessoas/adicionarNoCicloAtual'
-    | '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
-    | '/pessoas/$nomePessoa/gastos/$nome'
-    | '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
-    | '/pessoas/$nomePessoa/rendimentos/$nome'
+    | '/ImpostosCasa/'
+    | '/ImpostosCasa/ciclos/$dataInicio'
+    | '/ImpostosCasa/pessoas/adicionarNoCicloAtual'
+    | '/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
+    | '/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome'
+    | '/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
+    | '/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  CiclosDataInicioRoute: typeof CiclosDataInicioRoute
-  PessoasAdicionarNoCicloAtualRoute: typeof PessoasAdicionarNoCicloAtualRoute
-  PessoasNomeRendimentosAdicionarNoCicloAtualRoute: typeof PessoasNomeRendimentosAdicionarNoCicloAtualRoute
-  PessoasNomePessoaGastosNomeRoute: typeof PessoasNomePessoaGastosNomeRoute
-  PessoasNomePessoaGastosAdicionarNoCicloAtualRoute: typeof PessoasNomePessoaGastosAdicionarNoCicloAtualRoute
-  PessoasNomePessoaRendimentosNomeRoute: typeof PessoasNomePessoaRendimentosNomeRoute
+  ImpostosCasaIndexRoute: typeof ImpostosCasaIndexRoute
+  ImpostosCasaCiclosDataInicioRoute: typeof ImpostosCasaCiclosDataInicioRoute
+  ImpostosCasaPessoasAdicionarNoCicloAtualRoute: typeof ImpostosCasaPessoasAdicionarNoCicloAtualRoute
+  ImpostosCasaPessoasNomeRendimentosAdicionarNoCicloAtualRoute: typeof ImpostosCasaPessoasNomeRendimentosAdicionarNoCicloAtualRoute
+  ImpostosCasaPessoasNomePessoaGastosNomeRoute: typeof ImpostosCasaPessoasNomePessoaGastosNomeRoute
+  ImpostosCasaPessoasNomePessoaGastosAdicionarNoCicloAtualRoute: typeof ImpostosCasaPessoasNomePessoaGastosAdicionarNoCicloAtualRoute
+  ImpostosCasaPessoasNomePessoaRendimentosNomeRoute: typeof ImpostosCasaPessoasNomePessoaRendimentosNomeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/ImpostosCasa/': {
+      id: '/ImpostosCasa/'
+      path: '/ImpostosCasa'
+      fullPath: '/ImpostosCasa'
+      preLoaderRoute: typeof ImpostosCasaIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pessoas/adicionarNoCicloAtual': {
-      id: '/pessoas/adicionarNoCicloAtual'
-      path: '/pessoas/adicionarNoCicloAtual'
-      fullPath: '/pessoas/adicionarNoCicloAtual'
-      preLoaderRoute: typeof PessoasAdicionarNoCicloAtualRouteImport
+    '/ImpostosCasa/pessoas/adicionarNoCicloAtual': {
+      id: '/ImpostosCasa/pessoas/adicionarNoCicloAtual'
+      path: '/ImpostosCasa/pessoas/adicionarNoCicloAtual'
+      fullPath: '/ImpostosCasa/pessoas/adicionarNoCicloAtual'
+      preLoaderRoute: typeof ImpostosCasaPessoasAdicionarNoCicloAtualRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/ciclos/$dataInicio': {
-      id: '/ciclos/$dataInicio'
-      path: '/ciclos/$dataInicio'
-      fullPath: '/ciclos/$dataInicio'
-      preLoaderRoute: typeof CiclosDataInicioRouteImport
+    '/ImpostosCasa/ciclos/$dataInicio': {
+      id: '/ImpostosCasa/ciclos/$dataInicio'
+      path: '/ImpostosCasa/ciclos/$dataInicio'
+      fullPath: '/ImpostosCasa/ciclos/$dataInicio'
+      preLoaderRoute: typeof ImpostosCasaCiclosDataInicioRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pessoas/$nomePessoa/rendimentos/$nome': {
-      id: '/pessoas/$nomePessoa/rendimentos/$nome'
-      path: '/pessoas/$nomePessoa/rendimentos/$nome'
-      fullPath: '/pessoas/$nomePessoa/rendimentos/$nome'
-      preLoaderRoute: typeof PessoasNomePessoaRendimentosNomeRouteImport
+    '/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome': {
+      id: '/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome'
+      path: '/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome'
+      fullPath: '/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome'
+      preLoaderRoute: typeof ImpostosCasaPessoasNomePessoaRendimentosNomeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual': {
-      id: '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
-      path: '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
-      fullPath: '/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
-      preLoaderRoute: typeof PessoasNomePessoaGastosAdicionarNoCicloAtualRouteImport
+    '/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual': {
+      id: '/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
+      path: '/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
+      fullPath: '/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual'
+      preLoaderRoute: typeof ImpostosCasaPessoasNomePessoaGastosAdicionarNoCicloAtualRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pessoas/$nomePessoa/gastos/$nome': {
-      id: '/pessoas/$nomePessoa/gastos/$nome'
-      path: '/pessoas/$nomePessoa/gastos/$nome'
-      fullPath: '/pessoas/$nomePessoa/gastos/$nome'
-      preLoaderRoute: typeof PessoasNomePessoaGastosNomeRouteImport
+    '/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome': {
+      id: '/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome'
+      path: '/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome'
+      fullPath: '/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome'
+      preLoaderRoute: typeof ImpostosCasaPessoasNomePessoaGastosNomeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pessoas/$nome/rendimentos/adicionarNoCicloAtual': {
-      id: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
-      path: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
-      fullPath: '/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
-      preLoaderRoute: typeof PessoasNomeRendimentosAdicionarNoCicloAtualRouteImport
+    '/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual': {
+      id: '/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
+      path: '/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
+      fullPath: '/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual'
+      preLoaderRoute: typeof ImpostosCasaPessoasNomeRendimentosAdicionarNoCicloAtualRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  CiclosDataInicioRoute: CiclosDataInicioRoute,
-  PessoasAdicionarNoCicloAtualRoute: PessoasAdicionarNoCicloAtualRoute,
-  PessoasNomeRendimentosAdicionarNoCicloAtualRoute:
-    PessoasNomeRendimentosAdicionarNoCicloAtualRoute,
-  PessoasNomePessoaGastosNomeRoute: PessoasNomePessoaGastosNomeRoute,
-  PessoasNomePessoaGastosAdicionarNoCicloAtualRoute:
-    PessoasNomePessoaGastosAdicionarNoCicloAtualRoute,
-  PessoasNomePessoaRendimentosNomeRoute: PessoasNomePessoaRendimentosNomeRoute,
+  ImpostosCasaIndexRoute: ImpostosCasaIndexRoute,
+  ImpostosCasaCiclosDataInicioRoute: ImpostosCasaCiclosDataInicioRoute,
+  ImpostosCasaPessoasAdicionarNoCicloAtualRoute:
+    ImpostosCasaPessoasAdicionarNoCicloAtualRoute,
+  ImpostosCasaPessoasNomeRendimentosAdicionarNoCicloAtualRoute:
+    ImpostosCasaPessoasNomeRendimentosAdicionarNoCicloAtualRoute,
+  ImpostosCasaPessoasNomePessoaGastosNomeRoute:
+    ImpostosCasaPessoasNomePessoaGastosNomeRoute,
+  ImpostosCasaPessoasNomePessoaGastosAdicionarNoCicloAtualRoute:
+    ImpostosCasaPessoasNomePessoaGastosAdicionarNoCicloAtualRoute,
+  ImpostosCasaPessoasNomePessoaRendimentosNomeRoute:
+    ImpostosCasaPessoasNomePessoaRendimentosNomeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

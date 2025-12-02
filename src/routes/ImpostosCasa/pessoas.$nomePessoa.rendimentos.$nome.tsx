@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Layout } from "../view/Layout";
+import { Layout } from "../../view/Layout";
 import { useForm } from "@tanstack/react-form";
-import { adicionarRendimentoUsecase, obterCicloUsecase } from "../usecases/usecases";
+import { adicionarRendimentoUsecase, obterCicloUsecase } from "../../usecases/usecases";
 import {
   Button,
   Center,
@@ -19,7 +19,7 @@ import {
 } from "@maskito/kit";
 import { useMaskito } from "@maskito/react";
 
-export const Route = createFileRoute("/pessoas/$nomePessoa/rendimentos/$nome")({
+export const Route = createFileRoute("/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome")({
   component: RouteComponent,
   loader: async ({params}) => {
     const cicloView = await obterCicloUsecase.obterCicloAtual();
@@ -63,7 +63,7 @@ function RouteComponent() {
         retidoNaFonte: value.retidoNaFonte,
         ciclico: value.ciclico,
       });
-      navigate({ to: "/" });
+      navigate({ to: "/ImpostosCasa" });
     },
   });
   const valueInputRef = useMaskito({

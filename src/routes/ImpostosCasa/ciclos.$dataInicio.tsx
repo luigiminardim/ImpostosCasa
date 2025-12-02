@@ -4,8 +4,7 @@ import {
   excluirGastoUsecase,
   excluirRendimentoUsecase,
   obterCicloUsecase,
-} from "../usecases/usecases";
-import { useInvalidateCiclos } from "../view/useCiclo";
+} from "../../usecases/usecases";
 import {
   Accordion,
   Avatar,
@@ -35,16 +34,16 @@ import {
   LuTrash2,
   LuUserPlus,
 } from "react-icons/lu";
-import type { CicloView, PessoaView } from "../usecases/CicloView";
-import { Layout } from "../view/Layout";
+import type { CicloView, PessoaView } from "../../usecases/CicloView";
+import { Layout } from "../../view/Layout";
 import { RiParentFill } from "react-icons/ri";
-import type { Rendimento } from "../domain/Rendimento";
+import type { Rendimento } from "../../domain/Rendimento";
 import { TbDotsVertical } from "react-icons/tb";
 import { useMutation } from "@tanstack/react-query";
-import type { Gasto } from "../domain/Gasto";
-import { IsoDate } from "../domain/objectValues/IsoDate";
+import type { Gasto } from "../../domain/Gasto";
+import { IsoDate } from "../../domain/objectValues/IsoDate";
 
-export const Route = createFileRoute("/ciclos/$dataInicio")({
+export const Route = createFileRoute("/ImpostosCasa/ciclos/$dataInicio")({
   component: CicloPage,
 
   async loader({ params }) {
@@ -94,7 +93,7 @@ function EmptyPessoasSection() {
             </EmptyState.Description>
           </VStack>
           <Button asChild size="lg">
-            <Link to={`/pessoas/adicionarNoCicloAtual`}>
+            <Link to={`/ImpostosCasa/pessoas/adicionarNoCicloAtual`}>
               <LuUserPlus /> Adicionar Pessoa
             </Link>
           </Button>
@@ -236,17 +235,17 @@ function PessoasSection({
                   <Portal>
                     <Menu.Positioner>
                       <Menu.Content>
-                        <Menu.Item asChild value="new-txt">
+                        <Menu.Item asChild value="Novo Rendimento">
                           <Link
-                            to={`/pessoas/$nome/rendimentos/adicionarNoCicloAtual`}
+                            to={`/ImpostosCasa/pessoas/$nome/rendimentos/adicionarNoCicloAtual`}
                             params={{ nome: pessoa.nome }}
                           >
                             Novo Rendimento
                           </Link>
                         </Menu.Item>
-                        <Menu.Item value="new-file">
+                        <Menu.Item value="Novo Gasto">
                           <Link
-                            to="/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual"
+                            to="/ImpostosCasa/pessoas/$nomePessoa/gastos/adicionarNoCicloAtual"
                             params={{ nomePessoa: pessoa.nome }}
                           >
                             Novo Gasto
@@ -262,7 +261,7 @@ function PessoasSection({
         </For>
       </Accordion.Root>
       <Button asChild variant={"outline"}>
-        <Link to={`/pessoas/adicionarNoCicloAtual`}>
+        <Link to={`/ImpostosCasa/pessoas/adicionarNoCicloAtual`}>
           <LuUserPlus /> Adicionar Pessoa
         </Link>
       </Button>
@@ -279,15 +278,14 @@ function RendimentoArticle({
   rendimento: Rendimento;
   cicloEncerrado: boolean;
 }) {
-  const invalidateCiclos = useInvalidateCiclos();
+  const navigate = Route.useNavigate();
   const { mutate: excluirRendimento } = useMutation({
-    mutationFn: () =>
-      excluirRendimentoUsecase.excluirRendimentoDoCicloAtual(
+    async mutationFn() {
+      await excluirRendimentoUsecase.excluirRendimentoDoCicloAtual(
         nomePessoa,
         rendimento.nome
-      ),
-    onSuccess: () => {
-      invalidateCiclos();
+      );
+      navigate({ to: "/ImpostosCasa" });
     },
   });
 
@@ -323,7 +321,7 @@ function RendimentoArticle({
                 <Menu.Content>
                   <Menu.Item value="Editar Rendimento" asChild>
                     <Link
-                      to="/pessoas/$nomePessoa/rendimentos/$nome"
+                      to="/ImpostosCasa/pessoas/$nomePessoa/rendimentos/$nome"
                       params={{
                         nomePessoa: nomePessoa,
                         nome: rendimento.nome,
@@ -334,7 +332,7 @@ function RendimentoArticle({
                     </Link>
                   </Menu.Item>
                   <Menu.Item
-                    value="Editar Rendimento"
+                    value="Excluir Rendimento"
                     onClick={() => excluirRendimento()}
                   >
                     <LuTrash2 />
@@ -377,12 +375,14 @@ function GastoArticle({
   gasto: Gasto;
   cicloEncerrado: boolean;
 }) {
-  const invalidateCiclos = useInvalidateCiclos();
+  const navigate = Route.useNavigate();
   const { mutate: excluirGasto } = useMutation({
-    mutationFn: () =>
-      excluirGastoUsecase.excluirGastoDoCicloAtual(nomePessoa, gasto.nome),
-    onSuccess: () => {
-      invalidateCiclos();
+    async mutationFn() {
+      await excluirGastoUsecase.excluirGastoDoCicloAtual(
+        nomePessoa,
+        gasto.nome
+      );
+      navigate({ to: "/ImpostosCasa" });
     },
   });
   return (
@@ -411,9 +411,9 @@ function GastoArticle({
             <Portal>
               <Menu.Positioner>
                 <Menu.Content>
-                  <Menu.Item value="Editar Rendimento" asChild>
+                  <Menu.Item value="Editar Gasto" asChild>
                     <Link
-                      to="/pessoas/$nomePessoa/gastos/$nome"
+                      to="/ImpostosCasa/pessoas/$nomePessoa/gastos/$nome"
                       params={{
                         nomePessoa: nomePessoa,
                         nome: gasto.nome,
@@ -424,7 +424,7 @@ function GastoArticle({
                     </Link>
                   </Menu.Item>
                   <Menu.Item
-                    value="Editar Rendimento"
+                    value="Excluir Gasto"
                     onClick={() => excluirGasto()}
                   >
                     <LuTrash2 />
@@ -465,7 +465,7 @@ function ResumoFooter({ ciclo }: { ciclo: CicloView }) {
     async mutationFn() {
       await encerrarCicloUsecase.encerrarCicloAtual();
       navigate({
-        to: "/ciclos/$dataInicio",
+        to: "/ImpostosCasa/ciclos/$dataInicio",
         params: { dataInicio: IsoDate.today().toString() },
       });
     },

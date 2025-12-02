@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Layout } from "../view/Layout";
+import { Layout } from "../../view/Layout";
 import {
   Button,
   Center,
@@ -8,10 +8,10 @@ import {
   Input,
   Switch,
 } from "@chakra-ui/react";
-import { adicionarPesoaUsecase } from "../usecases/usecases";
+import { adicionarPesoaUsecase } from "../../usecases/usecases";
 import { useForm } from "@tanstack/react-form";
 
-export const Route = createFileRoute("/pessoas/adicionarNoCicloAtual")({
+export const Route = createFileRoute("/ImpostosCasa/pessoas/adicionarNoCicloAtual")({
   component: RouteComponent,
 });
 
@@ -27,7 +27,7 @@ function RouteComponent() {
         value.nome,
         value.ehDependente
       );
-      navigate({ to: "/" });
+      navigate({ to: "/ImpostosCasa" });
     },
   });
 
