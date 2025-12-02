@@ -1,4 +1,5 @@
 import type { Gasto } from "./Gasto";
+import { IsoDate } from "./objectValues/IsoDate";
 import type { Pessoa } from "./Pessoa";
 import {
   PoliticaDependenciaCasaDependentesMeiadosComDeducao,
@@ -18,15 +19,15 @@ export type DadoFinanceiro = {
 };
 
 export class Ciclo {
-  dataInicio: Date;
+  dataInicio: IsoDate;
 
-  dataFim: null | Date;
+  dataFim: null | IsoDate;
 
   dadosFinanceiros: DadoFinanceiro[];
 
   constructor(params: {
-    dataInicio: Date;
-    dataFim: null | Date;
+    dataInicio: IsoDate;
+    dataFim: null | IsoDate;
     dadosFinanceiros: Ciclo["dadosFinanceiros"];
   }) {
     this.dataInicio = params.dataInicio;
@@ -35,22 +36,11 @@ export class Ciclo {
   }
 
   static criarNovoCiclo() {
-    const agora = new Date();
-    const hoje = new Date(
-      agora.getFullYear(),
-      agora.getMonth(),
-      agora.getDate()
-    );
+    const hoje = IsoDate.today();
     return new Ciclo({ dataInicio: hoje, dataFim: null, dadosFinanceiros: [] });
   }
 
   static criarNovoCicloAPartirDoAnterior(cicloAnterior: Ciclo) {
-    const agora = new Date();
-    const hoje = new Date(
-      agora.getFullYear(),
-      agora.getMonth(),
-      agora.getDate()
-    );
     const dadosFinanceiros: Ciclo["dadosFinanceiros"] =
       cicloAnterior.dadosFinanceiros.map((dadoFinanceiroAnterior) => ({
         pessoa: dadoFinanceiroAnterior.pessoa,
@@ -61,7 +51,7 @@ export class Ciclo {
         gastos: dadoFinanceiroAnterior.gastos.filter((gasto) => gasto.ciclico),
       }));
     return new Ciclo({
-      dataInicio: hoje,
+      dataInicio: IsoDate.today(),
       dataFim: null,
       dadosFinanceiros,
     });
@@ -71,21 +61,16 @@ export class Ciclo {
     return this.dataFim !== null;
   }
 
-  encerrarCiclo() {
-    if (this.dataFim !== null) {
-      console.trace("Ciclo já está encerrado.");
+  podeEncerrar(): boolean {
+    const hoje = IsoDate.today();
+    return !this.encerrado() && hoje > this.dataInicio;
+  }
+
+  encerrar() {
+    if (!this.podeEncerrar()) {
       return;
     }
-    const agora = new Date();
-    const hoje = new Date(
-      agora.getFullYear(),
-      agora.getMonth(),
-      agora.getDate()
-    );
-    if (hoje <= this.dataInicio) {
-      console.trace("Data de fim do ciclo deve ser após a data de início.");
-      return;
-    }
+    const hoje = IsoDate.today()
     this.dataFim = hoje;
   }
 
@@ -183,10 +168,9 @@ export class Ciclo {
       console.trace("Pessoa não encontrada no ciclo.");
       return;
     }
-    dadosFinanceirosPessoa.gastos =
-      dadosFinanceirosPessoa.gastos.filter(
-        (gasto) => gasto.nome !== nome
-      );
+    dadosFinanceirosPessoa.gastos = dadosFinanceirosPessoa.gastos.filter(
+      (gasto) => gasto.nome !== nome
+    );
   }
 
   gastosDaPessoa(pessoa: Pessoa): Gasto[] {

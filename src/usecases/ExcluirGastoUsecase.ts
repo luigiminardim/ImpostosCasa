@@ -1,3 +1,4 @@
+import { IsoDate } from "../domain/objectValues/IsoDate";
 import type { CiclosRepository } from "./CiclosRepository";
 
 export class ExcluirGastoUsecase {
@@ -7,8 +8,11 @@ export class ExcluirGastoUsecase {
     this.ciclosRepository = ciclosRepository;
   }
 
-  async excluirGastoDoCicloAtual(nomePessoa: string, nome: string): Promise<void> {
-    const hoje = new Date();
+  async excluirGastoDoCicloAtual(
+    nomePessoa: string,
+    nome: string
+  ): Promise<void> {
+    const hoje = IsoDate.today();
     const cicloAtual = await this.ciclosRepository.obterCiclo(hoje);
     if (!cicloAtual) {
       throw new Error("Ciclo atual não encontrado");

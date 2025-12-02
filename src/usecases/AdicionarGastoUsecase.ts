@@ -1,4 +1,5 @@
 import { Gasto } from "../domain/Gasto";
+import { IsoDate } from "../domain/objectValues/IsoDate";
 import type { CiclosRepository } from "./CiclosRepository";
 
 export class AdicionarGastoUsecase {
@@ -9,7 +10,7 @@ export class AdicionarGastoUsecase {
   }
 
   async obterOpcaoDePagadoresNoCicloAtual(nomePessoa: string): Promise<string[]> {
-    const hoje = new Date();
+    const hoje = IsoDate.today();
     const cicloAtual = await this.ciclosRepository.obterCiclo(hoje);
     if (!cicloAtual) {
       throw new Error("Ciclo atual não encontrado");
@@ -27,7 +28,7 @@ export class AdicionarGastoUsecase {
     nomePagador: null | string;
     ciclico: boolean;
   }): Promise<void> {
-    const hoje = new Date();
+    const hoje = IsoDate.today();
     const cicloAtual = await this.ciclosRepository.obterCiclo(hoje);
     if (!cicloAtual) {
       throw new Error("Ciclo atual não encontrado");

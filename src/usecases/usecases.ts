@@ -6,6 +6,7 @@ import { AdicionarRendimentoUsecase } from "./AdicionarRendimentoUsecase";
 import { AdicionarGastoUsecase } from "./AdicionarGastoUsecase";
 import { ExcluirRendimentoUsecase } from "./ExcluirRendimentoUsecase";
 import { ExcluirGastoUsecase } from "./ExcluirGastoUsecase";
+import { EncerrarCicloUsecase } from "./EncerrarCicloUsecase";
 
 const pessoasRepository = new PessoasLocalRepository();
 const ciclosRepository = new CiclosLocalRepository(pessoasRepository);
@@ -24,6 +25,5 @@ export const excluirRendimentoUsecase = new ExcluirRendimentoUsecase(
 export const adicionarGastoUsecase = new AdicionarGastoUsecase(
   ciclosRepository
 );
-export const excluirGastoUsecase = new ExcluirGastoUsecase(
-  ciclosRepository
-);
+export const excluirGastoUsecase = new ExcluirGastoUsecase(ciclosRepository);
+export const encerrarCicloUsecase = new EncerrarCicloUsecase(ciclosRepository);

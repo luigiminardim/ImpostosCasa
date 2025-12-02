@@ -31,6 +31,7 @@ export class CicloView {
   dataFim: null | string;
 
   encerrado: boolean;
+  podeEncerrar: boolean;
 
   pessoas: PessoaView[];
 
@@ -38,9 +39,10 @@ export class CicloView {
 
   constructor(ciclo: Ciclo) {
     const relatorio = new RelatorioCiclo(ciclo);
-    this.dataInicio = ciclo.dataInicio.toISOString().split("T")[0] ?? "";
-    this.dataFim = ciclo.dataFim?.toISOString().split("T")[0] ?? null;
+    this.dataInicio = ciclo.dataInicio.toString();
+    this.dataFim = ciclo.dataFim?.toString() ?? null;
     this.encerrado = ciclo.encerrado();
+    this.podeEncerrar = ciclo.podeEncerrar();
     this.pessoas = ciclo.dadosFinanceiros.map((dadoFinanceiro) =>
       CicloView.createPessoaView(dadoFinanceiro, relatorio)
     );

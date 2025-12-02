@@ -1,4 +1,5 @@
 import { Ciclo } from "../domain/Ciclo";
+import { IsoDate } from "../domain/objectValues/IsoDate";
 import type { CiclosRepository } from "./CiclosRepository";
 import { CicloView } from "./CicloView";
 
@@ -10,11 +11,8 @@ export class ObterCicloUsecase {
   }
 
   async obterCicloAtual(): Promise<CicloView> {
-    const hoje = new Date(
-      new Date().getFullYear(),
-      new Date().getMonth(),
-      new Date().getDate()
-    );
+    const hoje = IsoDate.today();
+    console.log("HOJE:", hoje);
     const ultimoCiclo =
       (await this.cicloRepository.obterCiclo(hoje)) ??
       (await this.criarNovoCiclo());
@@ -25,7 +23,7 @@ export class ObterCicloUsecase {
   }
 
   async obterCiclo(data: string): Promise<null | CicloView> {
-    const dataObj = new Date(data);
+    const dataObj = IsoDate.fromString(data);
     const ciclo = await this.cicloRepository.obterCiclo(dataObj);
     if (!ciclo) return null;
     return new CicloView(ciclo);

@@ -1,3 +1,4 @@
+import { IsoDate } from "../domain/objectValues/IsoDate";
 import { Pessoa } from "../domain/Pessoa";
 import type { CiclosRepository } from "./CiclosRepository";
 import type { PessoasRepository } from "./PessoasRepository";
@@ -18,7 +19,7 @@ export class AdicionarPessoaUsecase {
     nomePessoa: string,
     ehDependente: boolean = false
   ): Promise<void> {
-    const hoje = new Date();
+    const hoje = IsoDate.today();
     const ciclo = await this.ciclosRepository.obterCiclo(hoje);
     if (!ciclo) {
       throw new Error("Ciclo não encontrado");

@@ -1,4 +1,4 @@
-import { Center, Container, Heading, Stack } from "@chakra-ui/react";
+import { Container, Heading, Stack } from "@chakra-ui/react";
 
 export function Layout({
   title,

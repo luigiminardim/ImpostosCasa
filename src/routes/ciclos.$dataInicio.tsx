@@ -1,10 +1,11 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  encerrarCicloUsecase,
   excluirGastoUsecase,
   excluirRendimentoUsecase,
   obterCicloUsecase,
 } from "../usecases/usecases";
-import { useCiclo, useInvalidateCiclos } from "../view/useCiclo";
+import { useInvalidateCiclos } from "../view/useCiclo";
 import {
   Accordion,
   Avatar,
@@ -41,30 +42,26 @@ import type { Rendimento } from "../domain/Rendimento";
 import { TbDotsVertical } from "react-icons/tb";
 import { useMutation } from "@tanstack/react-query";
 import type { Gasto } from "../domain/Gasto";
+import { IsoDate } from "../domain/objectValues/IsoDate";
 
 export const Route = createFileRoute("/ciclos/$dataInicio")({
   component: CicloPage,
 
-  beforeLoad: async ({ params }) => {
+  async loader({ params }) {
     const ciclo = await obterCicloUsecase.obterCiclo(params.dataInicio);
-    console.log("Ciclo na rota:", ciclo);
-    if (!ciclo) {
-      throw redirect({ to: "/" });
+    console.log("/ciclos/$dataInicio:", ciclo);
+    if (!ciclo || params.dataInicio !== ciclo.dataInicio) {
+      console.log("/ciclos/$dataInicio:", "Ciclo não encontrado");
+      throw new Error(
+        `Ciclo com data de início ${params.dataInicio} não encontrado`
+      );
     }
-    if (ciclo.dataInicio !== params.dataInicio) {
-      throw redirect({
-        to: "/ciclos/$dataInicio",
-        params: {
-          dataInicio: params.dataInicio,
-        },
-      });
-    }
+    return { ciclo };
   },
 });
 
 function CicloPage() {
-  const { dataInicio } = Route.useParams();
-  const { ciclo } = useCiclo(dataInicio);
+  const { ciclo } = Route.useLoaderData();
 
   if (ciclo === null) return <></>;
   return (
@@ -92,7 +89,7 @@ function EmptyPessoasSection() {
           <VStack textAlign="center">
             <EmptyState.Title>Não há pessoas cadastradas</EmptyState.Title>
             <EmptyState.Description>
-              Adicione pessoas para começar a gerenciar as finças de sua
+              Adicione pessoas para começar a gerenciar as finanças de sua
               família.
             </EmptyState.Description>
           </VStack>
@@ -463,16 +460,24 @@ function GastoArticle({
 function ResumoFooter({ ciclo }: { ciclo: CicloView }) {
   const title = ciclo.encerrado ? `Ciclo ${ciclo.dataInicio}` : `Ciclo Atual`;
   const items = [{ name: "Arrecadação Total", value: ciclo.arrecadacaoTotal }];
+  const navigate = Route.useNavigate();
+  const { mutate: encerrarCiclo, isPending: encerrandoCiclo } = useMutation({
+    async mutationFn() {
+      await encerrarCicloUsecase.encerrarCicloAtual();
+      navigate({
+        to: "/ciclos/$dataInicio",
+        params: { dataInicio: IsoDate.today().toString() },
+      });
+    },
+  });
   return (
     <Stack data-component="ResumoFooter" as="footer" width="full" gap={4}>
       <Stack as="header" width="full">
         <Stack gap={1}>
           <Heading size="xl">{title}</Heading>
           <Text>
-            {new Date(ciclo.dataInicio).toLocaleDateString()} -{" "}
-            {ciclo.dataFim
-              ? new Date(ciclo.dataFim).toLocaleDateString()
-              : "Presente"}
+            {formatarData(ciclo.dataInicio)} -{" "}
+            {ciclo.dataFim ? formatarData(ciclo.dataFim) : "presente"}
           </Text>
         </Stack>
       </Stack>
@@ -492,7 +497,19 @@ function ResumoFooter({ ciclo }: { ciclo: CicloView }) {
           ))}
         </Table.Body>
       </Table.Root>
-      <Button width={"full"}>Encerrar Ciclo</Button>
+      <Button
+        width={"full"}
+        loading={encerrandoCiclo}
+        onClick={() => encerrarCiclo()}
+        disabled={!ciclo.podeEncerrar}
+      >
+        Encerrar Ciclo
+      </Button>
     </Stack>
   );
+}
+
+function formatarData(dataIso: string) {
+  const [ano, mes, dia] = dataIso.split("-");
+  return `${dia}/${mes}/${ano}`;
 }

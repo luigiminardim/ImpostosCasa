@@ -1,3 +1,4 @@
+import { IsoDate } from "../domain/objectValues/IsoDate";
 import { Rendimento } from "../domain/Rendimento";
 import type { CiclosRepository } from "./CiclosRepository";
 
@@ -15,7 +16,7 @@ export class AdicionarRendimentoUsecase {
     retidoNaFonte: boolean;
     ciclico: boolean;
   }): Promise<void> {
-    const hoje = new Date();
+    const hoje = IsoDate.today();
     const cicloAtual = await this.ciclosRepository.obterCiclo(hoje);
     if (!cicloAtual) {
       throw new Error("Ciclo atual não encontrado");

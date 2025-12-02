@@ -1,5 +1,6 @@
 import { Ciclo, type DadoFinanceiro } from "../domain/Ciclo";
 import { Gasto } from "../domain/Gasto";
+import { IsoDate } from "../domain/objectValues/IsoDate";
 import { Rendimento } from "../domain/Rendimento";
 import type { CiclosRepository } from "../usecases/CiclosRepository";
 import type { PessoasRepository } from "../usecases/PessoasRepository";
@@ -41,11 +42,9 @@ class CicloDao {
   }
 
   static fromCiclo(ciclo: Ciclo): CicloDao {
-    const ISO_DATE_LENGTH = "yyyy-mm-dd".length;
     const value: CicloDao["value"] = {
-      dataInicio: ciclo.dataInicio.toISOString().substring(0, ISO_DATE_LENGTH),
-      dataFim:
-        ciclo.dataFim?.toISOString().substring(0, ISO_DATE_LENGTH) ?? null,
+      dataInicio: ciclo.dataInicio.toString(),
+      dataFim: ciclo.dataFim?.toString() ?? null,
       dadosFinanceiros: ciclo.dadosFinanceiros.map((dadoFinanceiro) => ({
         nomePessoa: dadoFinanceiro.pessoa.nome,
         ehDependente: dadoFinanceiro.ehDependente,
@@ -85,18 +84,23 @@ class CicloDao {
           )
         )
       )
-    ).reduce((dadosFinanceiros, dadoFinanceiro) => {
-      if (dadosFinanceiros instanceof Error) return dadosFinanceiros;
-      if (dadoFinanceiro instanceof Error) return dadoFinanceiro;
-      return [...dadosFinanceiros, dadoFinanceiro];
-    }, [] as DadoFinanceiro[] | Error);
+    ).reduce(
+      (dadosFinanceiros, dadoFinanceiro) => {
+        if (dadosFinanceiros instanceof Error) return dadosFinanceiros;
+        if (dadoFinanceiro instanceof Error) return dadoFinanceiro;
+        return [...dadosFinanceiros, dadoFinanceiro];
+      },
+      [] as DadoFinanceiro[] | Error
+    );
     if (dadosFinanceiros instanceof Error) {
       return dadosFinanceiros;
     }
     return new Ciclo({
-      dataInicio: new Date(this.value.dataInicio),
+      dataInicio: IsoDate.fromString(this.value.dataInicio),
       dataFim:
-        this.value.dataFim === null ? null : new Date(this.value.dataFim),
+        this.value.dataFim === null
+          ? null
+          : IsoDate.fromString(this.value.dataFim),
       dadosFinanceiros,
     });
   }
@@ -118,11 +122,14 @@ class CicloDao {
           this.gastoDaoToGasto(gastoDao, pessoasRepository)
         )
       )
-    ).reduce((gastos, gasto) => {
-      if (gastos instanceof Error) return gastos;
-      if (gasto instanceof Error) return gasto;
-      return [...gastos, gasto];
-    }, [] as Gasto[] | Error);
+    ).reduce(
+      (gastos, gasto) => {
+        if (gastos instanceof Error) return gastos;
+        if (gasto instanceof Error) return gasto;
+        return [...gastos, gasto];
+      },
+      [] as Gasto[] | Error
+    );
     if (gastos instanceof Error) {
       return gastos;
     }
@@ -175,12 +182,6 @@ export class CiclosLocalRepository implements CiclosRepository {
     this.pessoasRepository = pessoasRepository;
   }
 
-  private static idCiclo(dataInicio: Date): string {
-    const ISO_DATE_LENGTH = "yyyy-mm-dd".length;
-    const id = dataInicio.toISOString().substring(0, ISO_DATE_LENGTH);
-    return id;
-  }
-
   private obterIndices(): string[] {
     const json = window.localStorage.getItem("ciclos/*");
     if (json === null) return [];
@@ -202,22 +203,26 @@ export class CiclosLocalRepository implements CiclosRepository {
   }
 
   async salvarCiclo(ciclo: Ciclo): Promise<void> {
-    const idCiclo = CiclosLocalRepository.idCiclo(ciclo.dataInicio);
     const cicloJson = CicloDao.fromCiclo(ciclo).toJson();
-    window.localStorage.setItem(`ciclos/${idCiclo}`, cicloJson);
-    this.salvarIndice(idCiclo);
+    window.localStorage.setItem(
+      `ciclos/${ciclo.dataInicio.toString()}`,
+      cicloJson
+    );
+    this.salvarIndice(ciclo.dataInicio.toString());
   }
 
-  async obterCiclo(data: Date): Promise<null | Ciclo> {
+  async obterCiclo(data: IsoDate): Promise<null | Ciclo> {
     const indices = await this.obterIndices();
-    const primeiroIndiceMaiorOuIgual = indices.find((indice) => {
-      const dataInicio = new Date(indice);
+    const ultimoIndiceMaiorOuIgual = indices.findLast((indice) => {
+      const dataInicio = IsoDate.fromString(indice);
       return dataInicio <= data;
     });
-    if (!primeiroIndiceMaiorOuIgual) {
+    if (!ultimoIndiceMaiorOuIgual) {
       return null;
     }
-    const json = window.localStorage.getItem(`ciclos/${primeiroIndiceMaiorOuIgual}`);
+    const json = window.localStorage.getItem(
+      `ciclos/${ultimoIndiceMaiorOuIgual}`
+    );
     if (json === null) return null;
     const ciclo = await CicloDao.fromJson(json).toCiclo(this.pessoasRepository);
     if (ciclo instanceof Error) {
