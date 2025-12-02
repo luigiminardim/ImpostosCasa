@@ -6,7 +6,7 @@ export function Layout({
   footer,
 }: React.PropsWithChildren<{ title: string; footer: React.ReactNode }>) {
   return (
-    <Stack aria-label="Layout" direction={"column"} height={"100vh"}>
+    <Stack aria-label="Layout" direction={"column"} height={"100dvh"}>
       <Container
         as="header"
         display={"flex"}
